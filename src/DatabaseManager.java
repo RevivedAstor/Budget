@@ -12,16 +12,15 @@ public class DatabaseManager {
     }
 
     public static void initializeConnection() throws SQLException {
-        if (c == null || c.isClosed()) {
-            try {
-                Class.forName("org.postgresql.Driver");
+        try {
+            Class.forName("org.postgresql.Driver");
 
-                // Set the connection to a static member
-                c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "ast0r401");
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new SQLException("Failed to initialize the connection.", e);
-            }
+            // Set the connection to a static member
+            c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "ast0r401");
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new SQLException("Failed to initialize the connection.", e);
+
         }
     }
 

@@ -3,39 +3,32 @@ import java.sql.*;
 public class DatabaseManager {
     private static Connection c = null;
 
-    // Initialize the connection to the database (Singleton pattern)
-    public static void initializeConnection() throws SQLException {
-        if (c == null) {
-            try {
-                Class.forName("org.postgresql.Driver");
-                c = DriverManager.getConnection(
-                        "jdbc:postgresql://localhost:5432/postgres", "postgres", "ast0r401");
-            } catch (Exception e) {
-                e.printStackTrace();
-                throw new SQLException("Error while initializing the connection", e);
-            }
-        }
-    }
-
-    // Get the existing connection (returns the connection)
     public static Connection getConnection() throws SQLException {
-        if (c == null) {
+        // Check if the connection is open. If not, re-establish the connection
+        if (c == null || c.isClosed()) {
             initializeConnection();
         }
         return c;
     }
 
-    // Close the connection (Singleton pattern)
-    public static void closeConnection() throws SQLException {
-        if (c != null) {
+    public static void initializeConnection() throws SQLException {
+        if (c == null || c.isClosed()) {
             try {
-                c.close();
-            } catch (SQLException e) {
+                Class.forName("org.postgresql.Driver");
+
+                // Set the connection to a static member
+                c = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "ast0r401");
+            } catch (Exception e) {
                 e.printStackTrace();
-                throw e;
-            } finally {
-                c = null; // Reset the connection to null after closing it
+                throw new SQLException("Failed to initialize the connection.", e);
             }
         }
     }
+
+    public static void closeConnection() throws SQLException {
+        if (c != null && !c.isClosed()) {
+            c.close();
+        }
+    }
 }
+

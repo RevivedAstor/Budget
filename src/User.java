@@ -1,20 +1,15 @@
 public class User {
-    private int id;
     private String username;
     private String email;
     private String password; // Store hashed password in DB
 
-    public User(int id, String username, String email, String password) {
-        this.id = id;
+    public User(String username, String email) {
         this.username = username;
         this.email = email;
-        this.password = password;
+//        this.password = password;
     }
 
-    // Getters and Setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
-
+    //Getters and Setters
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
 
@@ -23,5 +18,12 @@ public class User {
 
     public String getPassword() { return password; }
     public void setPassword(String password) { this.password = password; }
+
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("Username: ").append(username).append("\n");
+        sb.append("Email: ").append(email);
+        return sb.toString();
+    }
 }
 

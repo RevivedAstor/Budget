@@ -1,18 +1,18 @@
 import java.sql.*;
 
 
-public class TransactionDAO {
+public class TransactionDAO implements Description{
 
-    public static boolean addTransaction(String username, boolean type, double amount, String description) {
-        String sql = "INSERT INTO transactions (userID, username, type, amount, description) VALUES (?, ?, ?, ?, ?)";
+    //TODO: remove username and user userID
+    public static boolean addTransaction(boolean type, double amount, String description) {
+        String sql = "INSERT INTO transactions (userID, type, amount, description) VALUES (?, ?, ?, ?)";
         try (Connection c = DatabaseManager.getConnection()) {
             PreparedStatement pstmt = c.prepareStatement(sql);
 
             pstmt.setInt(1, Session.getCurrentID());
-            pstmt.setString(2, username);
-            pstmt.setBoolean(3, type);
-            pstmt.setDouble(4, amount);
-            pstmt.setString(5, description);
+            pstmt.setBoolean(2, type);
+            pstmt.setDouble(3, amount);
+            pstmt.setString(4, description);
 
             int rowsAffected = pstmt.executeUpdate();
             return rowsAffected > 0;
@@ -22,13 +22,19 @@ public class TransactionDAO {
         return false;
     }
 
-    public static void listTransactions(String username) {
-        String sql = "SELECT date, type, amount, description FROM transactions WHERE username = ?";
+    //To THINK: Maybe I would need this function for filtering transaction by date
+    public static void description() {
+        StringBuilder sb = new StringBuilder();
+
+    }
+
+    public static void listTransactions(int userID) { //TODO: use userID instead of username
+        String sql = "SELECT date, type, amount, description FROM transactions WHERE userID =?";
 
         try (Connection c = DatabaseManager.getConnection();
             PreparedStatement pstmt = c.prepareStatement(sql)) {
 
-            pstmt.setString(1, username);
+            pstmt.setInt(1, userID);
 
             ResultSet rs = pstmt.executeQuery();
 

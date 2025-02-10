@@ -1,10 +1,8 @@
 import java.sql.*;
 
-//Add some polymorphisim, like adding an interface that gives a description function into both DAO functions
-
 public class UserDAO implements Description {
 
-    //Register function
+    //Register functions
     public static boolean register(String username, String email, String password) {
         String sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
         try (Connection c = DatabaseManager.getConnection();
@@ -56,6 +54,26 @@ public class UserDAO implements Description {
         System.out.println(sb);
     }
 
+    public static int findIDByUsername(String username) {
+        String sql = "SELECT id FROM users WHERE username =?";
+        try (Connection c = DatabaseManager.getConnection();
+            PreparedStatement pstmt = c.prepareStatement(sql)) {
+
+            pstmt.setString(1, username);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return -1;
+    }
+
+
+//Update functions
     public static boolean updateUsername(String username) {
         String sql = "UPDATE users SET username = ? WHERE id = ?";
         try (Connection c = DatabaseManager.getConnection();

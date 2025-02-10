@@ -4,22 +4,50 @@ import java.sql.*;
 public class TransactionDAO implements Description{
 
     //TODO: remove username and user userID
-    public static boolean addTransaction(boolean type, double amount, String description) {
-        String sql = "INSERT INTO transactions (userID, type, amount, description) VALUES (?, ?, ?, ?)";
+    public static boolean addTransaction(double amount, String tag) {
+        String sql = "INSERT INTO transactions (userID, amount, tags) VALUES (?, ?, ?)";
         try (Connection c = DatabaseManager.getConnection()) {
             PreparedStatement pstmt = c.prepareStatement(sql);
 
             pstmt.setInt(1, Session.getCurrentID());
-            pstmt.setBoolean(2, type);
-            pstmt.setDouble(3, amount);
-            pstmt.setString(4, description);
+            pstmt.setDouble(2, amount);
+            pstmt.setString(3, tag);
 
             int rowsAffected = pstmt.executeUpdate();
+
+            BalanceDAO.changeBalance(amount);
+
             return rowsAffected > 0;
         }catch (SQLException e) {
             e.printStackTrace();
         }
         return false;
+    }
+
+    public static boolean addTransaction(int id, double amount, String tag) {
+        String sql = "INSERT INTO transactions (userID, amount, tags) VALUES (?, ?, ?)";
+        try (Connection c = DatabaseManager.getConnection();
+             PreparedStatement pstmt = c.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+            pstmt.setDouble(2, amount);
+            pstmt.setString(3, tag);
+
+            int rowsAffected = pstmt.executeUpdate();
+            BalanceDAO.changeBalance(id, amount);
+
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+    public static boolean TransferTo(int idReceiver, double amount) {
+        int id = Session.getCurrentID();
+        addTransaction(id, -amount, "Sending to "+idReceiver);
+        return addTransaction(idReceiver, amount, "Receiving from " + id);
     }
 
     //To THINK: Maybe I would need this function for filtering transaction by date
@@ -28,8 +56,8 @@ public class TransactionDAO implements Description{
 
     }
 
-    public static void listTransactions(int userID) { //TODO: use userID instead of username
-        String sql = "SELECT date, type, amount, description FROM transactions WHERE userID =?";
+    public static void listTransactions(int userID) {
+        String sql = "SELECT date, amount, tags FROM transactions WHERE userID =?";
 
         try (Connection c = DatabaseManager.getConnection();
             PreparedStatement pstmt = c.prepareStatement(sql)) {
@@ -40,16 +68,38 @@ public class TransactionDAO implements Description{
 
             while (rs.next()) {
                 String date = rs.getString("date");
-                boolean type = rs.getBoolean("type"); // TRUE = Outcome, FALSE = Income
                 double amount = rs.getDouble("amount");
-                String description = rs.getString("description");
+                String tags = rs.getString("tags");
 
-                //false and true correspond to + and - respectively
-                String typeString = type ? "-" : "+";
 
                 // Print formatted transaction details
-                System.out.printf("%s | %s%.2f | %s%n", date, typeString, amount, description);
+                System.out.printf("%s | %.2f | %s%n", date, amount, tags);
             }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void listTransactions(int userID, Date startDate, Date endDate) {
+        String sql = "SELECT * FROM transactions WHERE userID = ? AND date BETWEEN ? AND ?";
+        try (Connection c = DatabaseManager.getConnection();
+             PreparedStatement pstmt = c.prepareStatement(sql)) {
+
+            pstmt.setInt(1, userID);
+            pstmt.setDate(2, startDate);
+            pstmt.setDate(3, endDate);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String date = rs.getString("date");
+                double amount = rs.getDouble("amount");
+                String tags = rs.getString("tags");
+
+
+                // Print formatted transaction details
+                System.out.printf("%s | %.2f | %s%n", date, amount, tags);
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

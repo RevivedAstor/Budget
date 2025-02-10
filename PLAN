@@ -1,4 +1,20 @@
-Transaction between users?
+1. Transaction System Enhancements
+Make it so that the user balance is a column in the users DB (store balance instead of calculating it dynamically).
+Transactions between users (transfer money between accounts, update both balances).
+Categorization of transactions (introduce tags for transaction types, make descriptions optional).
+Filtering transactions by date (select a specific time period to view transaction history).
+Recurring transactions (automatically add scheduled transactions).
+
+2. Analytics & UX Improvements
+Implementing basic analytics (spending breakdowns, income vs. expenses, insights).
+Improving main menu flow (e.g., retry login after failure without restarting).
+Polymorphism (enhance code structure, possibly refactor DAOs for better design).c
+
+3. User Management Improvements
+Proper user registration (e.g., enforce password rules, validate input).
+SOLVED - Implement profile updates (allow users to update their username, email, password).
+Admin panel (manage users, transactions, and system settings).
+
 
 1. Planning Phase
 Goals: Define what you want to accomplish.

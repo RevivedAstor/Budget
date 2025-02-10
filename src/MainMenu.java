@@ -1,6 +1,8 @@
 import java.util.Objects;
 import java.util.Scanner;
 
+
+//TODO: Maybe dividing this class into several different ones would not be bad
 public class MainMenu {
     static boolean restart = false;
 
@@ -32,10 +34,11 @@ public class MainMenu {
                 //The menu user gets after logging in
             } else {
                 //TODO: Figure out if this is the best placement for the balance
-                System.out.println("Current balance: " + BalanceDAO.getBalance(Session.getCurrentID()));
+                System.out.println("Current balance: " + BalanceDAO.getBalance());
                 System.out.println("1. Profile");
                 System.out.println("2. Add Transaction");
                 System.out.println("3. View Transactions");
+                System.out.println("4. Transfer to an another user");
                 System.out.println("8. Update user information");
                 System.out.println("9. Exit");
                 System.out.print("Choose an option: ");
@@ -47,6 +50,7 @@ public class MainMenu {
                     case 1 -> showProfile();
                     case 2 -> addTransaction(scanner);
                     case 3 -> viewTransactions();
+                    case 4 -> transferTo(scanner);
                     case 8 -> updateInformation(scanner);
                     case 9 -> {
                         System.out.println("Exiting...");
@@ -147,25 +151,12 @@ public class MainMenu {
         System.out.print("Enter amount (prefix with '+' for income, '-' for expense): ");
         String amountInput = scanner.nextLine().trim();
 
-        if (amountInput.isEmpty() || (!amountInput.startsWith("+") && !amountInput.startsWith("-"))) {
-            System.out.println("Invalid input. Please start with '+' for income or '-' for expense.");
-            return;
-        }
-
-        boolean type = amountInput.charAt(0) == '-'; // True for '-', False for '+'
-        double amount;
-
-        try {
-            amount = Double.parseDouble(amountInput.substring(1)); // Remove '+' or '-' and parse the number
-        } catch (NumberFormatException e) {
-            System.out.println("Invalid amount format.");
-            return;
-        }
+        double amount = Double.parseDouble(amountInput);
 
         System.out.print("Enter description: ");
         String description = scanner.nextLine().trim();
 
-        if (TransactionDAO.addTransaction(type, amount, description))
+        if (TransactionDAO.addTransaction(amount, description))
             System.out.println("Transaction added successfully.");
     }
 
@@ -175,6 +166,18 @@ public class MainMenu {
         double pos = BalanceDAO.positiveSum(Session.getCurrentID());
         double neg = BalanceDAO.negativeSum(Session.getCurrentID());
         System.out.println(pos + " | " + neg);
+    }
+
+    private static void transferTo(Scanner scanner) {
+        System.out.print("Enter username of the receiver: ");
+        String username = scanner.nextLine().trim();
+        int idReceiver = UserDAO.findIDByUsername(username);
+
+        System.out.print("Enter the amount to transfer: ");
+        String amountInput = scanner.nextLine();
+        double amount = Double.parseDouble(amountInput);
+
+        TransactionDAO.TransferTo(idReceiver, amount);
     }
 
     //SMALL FUNCTIONS

@@ -54,24 +54,6 @@ public class UserDAO implements Description {
         System.out.println(sb);
     }
 
-    public static int findIDByUsername(String username) {
-        String sql = "SELECT id FROM users WHERE username =?";
-        try (Connection c = DatabaseManager.getConnection();
-            PreparedStatement pstmt = c.prepareStatement(sql)) {
-
-            pstmt.setString(1, username);
-
-            ResultSet rs = pstmt.executeQuery();
-
-            if (rs.next()) {
-                return rs.getInt("id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return -1;
-    }
-
 
 //Update functions
     public static boolean updateUsername(String username) {

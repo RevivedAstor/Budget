@@ -1,3 +1,6 @@
+package dao;
+
+import database.DatabaseManager;
 import java.sql.*;
 
 public class AdminDAO {

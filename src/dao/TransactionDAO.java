@@ -1,7 +1,12 @@
+package dao;
+
+import database.DatabaseManager;
+import utils.Session;
+
 import java.sql.*;
 
 
-public class TransactionDAO implements Description{
+public class TransactionDAO implements Description {
 
     //TODO: remove username and user userID
     public static boolean addTransaction(double amount, String tag) {
@@ -50,17 +55,11 @@ public class TransactionDAO implements Description{
         return addTransaction(idReceiver, amount, "Receiving from " + id);
     }
 
-    //To THINK: Maybe I would need this function for filtering transaction by date
-    public static void description() {
-        StringBuilder sb = new StringBuilder();
-
-    }
-
     public static void listTransactions(int userID) {
         String sql = "SELECT date, amount, tags FROM transactions WHERE userID =?";
 
         try (Connection c = DatabaseManager.getConnection();
-            PreparedStatement pstmt = c.prepareStatement(sql)) {
+             PreparedStatement pstmt = c.prepareStatement(sql)) {
 
             pstmt.setInt(1, userID);
 

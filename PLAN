@@ -54,7 +54,7 @@ Phase 2: Database Interaction (2–3 days)
 Set Up Database Schema:
 Implement SQL scripts to create tables (Users, Transactions, Categories).
 Database Connection & Manager:
-Create a DatabaseManager class for managing the connection.
+Create a database.DatabaseManager class for managing the connection.
 Basic CRUD Operations:
 Implement methods for basic interactions (insert, update, delete, and fetch records for Users and Transactions).
 3. Transaction Management (4–5 days)
@@ -96,7 +96,7 @@ Basic charts for spending trends (pie charts for categories, bar charts for spen
 6. Testing & Debugging (3–4 days)
 
 Unit Testing:
-Write tests for your main classes (User, Transaction, DatabaseManager).
+Write tests for your main classes (User, Transaction, database.DatabaseManager).
 Ensure all methods work as expected (e.g., adding a transaction updates the balance).
 Debugging:
 Fix issues that arise during testing.

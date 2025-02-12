@@ -1,3 +1,8 @@
+package dao;
+
+import database.DatabaseManager;
+import utils.Session;
+
 import java.sql.*;
 
 public class BalanceDAO {

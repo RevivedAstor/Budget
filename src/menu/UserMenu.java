@@ -1,3 +1,12 @@
+package menu;
+
+import dao.BalanceDAO;
+import dao.TransactionDAO;
+import dao.UserDAO;
+import utils.Session;
+import utils.UserUtils;
+import utils.ValidatorUtil;
+
 import java.sql.Date;
 import java.util.Objects;
 import java.util.Scanner;

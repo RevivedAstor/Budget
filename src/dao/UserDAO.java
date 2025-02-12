@@ -1,10 +1,15 @@
+package dao;
+
+import database.DatabaseManager;
+import utils.Session;
+
 import java.sql.*;
 
 public class UserDAO implements Description {
 
     //Register functions
     public static boolean register(String username, String email, String password) {
-        String sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO users (username, email, password, balance) VALUES (?, ?, ?, 0)";
         try (Connection c = DatabaseManager.getConnection();
              PreparedStatement pstmt = c.prepareStatement(sql)) {
 
@@ -59,7 +64,7 @@ public class UserDAO implements Description {
     public static boolean updateUsername(String username) {
         String sql = "UPDATE users SET username = ? WHERE id = ?";
         try (Connection c = DatabaseManager.getConnection();
-            PreparedStatement pstmt = c.prepareStatement(sql)) {
+             PreparedStatement pstmt = c.prepareStatement(sql)) {
 
             pstmt.setString(1, username.trim());
             pstmt.setInt(2, Session.getCurrentID());

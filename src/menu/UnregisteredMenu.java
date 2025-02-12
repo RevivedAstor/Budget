@@ -1,4 +1,10 @@
-import java.util.Objects;
+package menu;
+
+import dao.UserDAO;
+import utils.Session;
+import utils.UserUtils;
+import utils.ValidatorUtil;
+
 import java.util.Scanner;
 
 public class UnregisteredMenu extends MainMenu{
@@ -72,8 +78,8 @@ public class UnregisteredMenu extends MainMenu{
 
     private static String validatePassword(Scanner scanner) {
         String password;
+        System.out.println("Password should have minimum 8 characters, 1 uppercase, 1 number, and 1 special character");
         while (true) {
-            System.out.println("Password should have minimum 8 characters, 1 uppercase, 1 number, and 1 special character");
             System.out.print("Enter password: ");
             password = scanner.nextLine().trim();
 

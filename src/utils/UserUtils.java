@@ -1,3 +1,7 @@
+package utils;
+
+import database.DatabaseManager;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,6 +24,24 @@ public class UserUtils {
             e.printStackTrace();
         }
         return -1;
+    }
+
+    public static String findUserByID(int id) {
+        String sql = "SELECT username FROM users WHERE username = ?";
+        try (Connection c = DatabaseManager.getConnection();
+            PreparedStatement pstmt = c.prepareStatement(sql)) {
+
+            pstmt.setInt(1, id);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("username");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return "Not found";
     }
 
     public static boolean usernameExists(String username) {

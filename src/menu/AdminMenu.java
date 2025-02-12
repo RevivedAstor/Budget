@@ -1,3 +1,9 @@
+package menu;
+
+import dao.AdminDAO;
+import utils.Session;
+import utils.UserUtils;
+
 import java.util.Scanner;
 
 public class AdminMenu extends MainMenu {

@@ -1,3 +1,7 @@
+package menu;
+
+import utils.Session;
+
 import java.util.Scanner;
 
 abstract public class MainMenu {

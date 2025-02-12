@@ -1,3 +1,5 @@
+package utils;
+
 public class Session {
     private static String currentUsername = null;
     private static String currentEmail = null;

@@ -27,7 +27,7 @@ public class UserUtils {
     }
 
     public static String findUserByID(int id) {
-        String sql = "SELECT username FROM users WHERE username = ?";
+        String sql = "SELECT username FROM users WHERE id = ?";
         try (Connection c = DatabaseManager.getConnection();
             PreparedStatement pstmt = c.prepareStatement(sql)) {
 

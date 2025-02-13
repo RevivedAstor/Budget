@@ -119,7 +119,10 @@ public class UserMenu extends MainMenu {
             tag = "Other";
         }
 
-        boolean success = TransactionDAO.addTransaction(Session.getCurrentID(), amount, tag);
+        System.out.println("Add message to the transaction (Optional)");
+        String description = scanner.nextLine();
+
+        boolean success = TransactionDAO.addTransaction(amount, tag, description);
         if (success) {
             System.out.println("Transaction added successfully!");
         } else {
@@ -178,7 +181,10 @@ public class UserMenu extends MainMenu {
         String amountInput = scanner.nextLine();
         double amount = Double.parseDouble(amountInput);
 
-        if(TransactionDAO.TransferTo(idReceiver, amount))
+        System.out.println("Add message to the transfer (Optional)");
+        String description = scanner.nextLine();
+
+        if(TransactionDAO.TransferTo(idReceiver, amount, description))
             System.out.println("Transfer done successfully");
     }
 
